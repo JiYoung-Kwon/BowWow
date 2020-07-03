@@ -2,24 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * Ally(idle)에 들어가는 사운드 스크립트
+ */
+
 public class IdleManager : MonoBehaviour
 {
     public AudioSource JumpAudioSource;
     public AudioClip JumpClip;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void PlayJumpSound()
+    public void PlayJumpSound() //점프 효과음
     {
         JumpAudioSource.PlayOneShot(JumpClip);
     }

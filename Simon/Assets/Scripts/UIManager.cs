@@ -4,8 +4,13 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/*
+ * 임시 스크립트(CSV 관리) -> 나중에 다른 콘텐츠랑 통합할 때 삭제
+ */
+
 public class UIManager : MonoBehaviour
 {
+    #region Singleton
     private static UIManager _uiManager;
     public static UIManager UI
     {
@@ -15,6 +20,7 @@ public class UIManager : MonoBehaviour
     {
         _uiManager = GetComponent<UIManager>();
     }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -22,23 +28,17 @@ public class UIManager : MonoBehaviour
         CreateMmrSimFile();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void SceneChange()
+    public void SceneChange() //start -> level 선택 씬으로
     {
         SceneManager.LoadScene("LevelSelect");
     }
 
-    public void OnApplicationQuit()
+    public void OnApplicationQuit() //게임 종료 시, CSV 쓰기
     {
         UpdateMmrSimFile();
     }
 
-    void CreateMmrSimFile()
+    void CreateMmrSimFile() //CSV 파일 생성
     {
         if (!System.IO.File.Exists(Mmr_Sim_Data.getPath()) || new FileInfo(Mmr_Sim_Data.getPath()).Length == 0)
         {
@@ -93,7 +93,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void UpdateMmrSimFile()
+    void UpdateMmrSimFile() //CSV 데이터 덮어쓰기
     {
         string filePath = Mmr_Sim_Data.getPath();
         StreamWriter outStream = System.IO.File.CreateText(filePath);

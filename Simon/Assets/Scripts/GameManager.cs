@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * 게임 이벤트 관련 스크립트
+ */
+
 public class GameManager : MonoBehaviour
 {
+    #region 변수
     public GameObject LightObject;
     public GameObject Cylinder, Pizza, Cube;
     public GameObject Ally;
@@ -16,8 +21,9 @@ public class GameManager : MonoBehaviour
     public Vector3 Cposition;
 
     Animator animator;
+    #endregion
 
-    void Start()
+    void Start() //시작 시 초기화
     {
         LightMemory();
         RandomNum();
@@ -140,6 +146,7 @@ public class GameManager : MonoBehaviour
 
             LightOn(randArray[i]);
             SimSoundManager.Sound.ButtonOn();
+            
             //노출 시간
             if (SimLevelManager.Level.timeLevel == 1)
             {
@@ -163,7 +170,7 @@ public class GameManager : MonoBehaviour
         game_start = true;
     }
 
-    public void LightMemory()
+    public void LightMemory() //오브젝트 정보 저장
     {
         if (SimLevelManager.Level.levelselect == 4)
             LightObject = Cylinder;
@@ -331,12 +338,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    IEnumerator FailLight()
+    IEnumerator FailLight() //틀렸을 때 버튼 효과 어둡게
     {
         int count = 0;
         while (count < 3)
-        {
-            //틀렸을 때 버튼 효과 어둡게
+        {           
             LightObject.transform.GetChild(0).GetComponent<MeshRenderer>().material.color = new Color(1f, 0f, 0f);
             LightObject.transform.GetChild(1).GetComponent<MeshRenderer>().material.color = new Color(1f, 1f, 0f);
             LightObject.transform.GetChild(2).GetComponent<MeshRenderer>().material.color = new Color(0f, 1f, 0f);
@@ -532,7 +538,7 @@ public class GameManager : MonoBehaviour
         Door.transform.GetChild(DoorIndex + 1).rotation = Quaternion.Euler(0, 90f, 0);
     }
 
-    public void FailHeart()
+    public void FailHeart() //틀릴 시 하트 감소
     {
         SimUIManager.UI.LifeObject[SimUIManager.UI.life - 1].SetActive(false);
         SimUIManager.UI.life--;

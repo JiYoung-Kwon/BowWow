@@ -2,8 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * 게임 사운드 스크립트
+ */
+
 public class SimSoundManager : MonoBehaviour
 {
+    #region 변수
     public AudioSource EffectAudioSource;
     public AudioSource MoveAudioSource;
     public AudioSource BGMAudioSource;
@@ -17,8 +22,9 @@ public class SimSoundManager : MonoBehaviour
 
     public bool WalkStart = false;
     public bool JumpStart = false;
+    #endregion
 
-    //싱글톤
+    #region Singleton
     private static SimSoundManager sound;
     public static SimSoundManager Sound
     {
@@ -29,12 +35,7 @@ public class SimSoundManager : MonoBehaviour
     {
         sound = GetComponent<SimSoundManager>();
     }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    #endregion
 
     // Update is called once per frame
     void Update()
@@ -47,7 +48,7 @@ public class SimSoundManager : MonoBehaviour
 
     }
 
-    public void PlayWalkSound()
+    public void PlayWalkSound() //걷기 사운드
     {
         MoveAudioSource.clip = WalkClip;
         if (MoveAudioSource.volume != 0)
@@ -57,22 +58,22 @@ public class SimSoundManager : MonoBehaviour
         MoveAudioSource.Play();
     }
 
-    public void ClickSimonButton()
+    public void ClickSimonButton() //simon 버튼 직접 클릭 사운드
     {
         EffectAudioSource.PlayOneShot(ClickSimonClip);
     }
 
-    public void StageClear()
+    public void StageClear() //클리어 사운드
     {
         EffectAudioSource.PlayOneShot(SuccessClip);
     }
 
-    public void StageFail()
+    public void StageFail() //fail 사운드
     {
         EffectAudioSource.PlayOneShot(FailClip);
     }
 
-    public void ButtonOn()
+    public void ButtonOn() //Simon 버튼 제시 사운드
     {
         EffectAudioSource.PlayOneShot(ButtonClip);
     }

@@ -5,7 +5,8 @@ using System.IO;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-public class CSVReader
+
+public class CSVReader //csv 읽어오기
 {
     public static List<Dictionary<string, object>> Read(string file)
     {

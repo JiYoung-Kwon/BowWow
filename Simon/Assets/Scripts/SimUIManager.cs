@@ -5,8 +5,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*
+ * 플레이 씬 UI 관련 스크립트
+ */
+
 public class SimUIManager : MonoBehaviour
 {
+    #region 변수
     public GameObject FinishPanel;
     public GameObject GameOverPanel;
     public GameObject BgmOption;
@@ -38,8 +43,9 @@ public class SimUIManager : MonoBehaviour
     public int starCount = 0;
 
     public GameObject[] Clear_Star;
+    #endregion
 
-    //싱글톤
+    #region Singleton
     private static SimUIManager ui;
     public static SimUIManager UI
     {
@@ -50,6 +56,7 @@ public class SimUIManager : MonoBehaviour
     {
         ui = GetComponent<SimUIManager>();
     }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -62,8 +69,9 @@ public class SimUIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!isPaused)
+        if (!isPaused) //플레이 화면
         {
+            //시간 표시
             _time += Time.deltaTime;
             int minute = (int)_time / 60;
             int second = (int)_time - (minute * 60);
@@ -81,11 +89,12 @@ public class SimUIManager : MonoBehaviour
         }
     }
 
-    public void Option()
+    public void Option() //옵션 버튼 클릭 시
     {
         isPaused = true;
         Time.timeScale = 0f;
 
+        //bgm/effect 소리 끔
         if (BgmOption.activeSelf == true)
         {
             bgmOn = true;
@@ -100,31 +109,32 @@ public class SimUIManager : MonoBehaviour
         }
     }
 
-    public void BGMOn()
+    public void BGMOn() //배경음 ON
     {
         bgmOn = true;
     }
 
-    public void BGMOff()
+    public void BGMOff() //배경음 OFF
     {
         bgmOn = false;
         SimSoundManager.Sound.BGMAudioSource.volume = 0f;
     }
 
-    public void EFOn()
+    public void EFOn() //효과음 ON
     {
         effectOn = true;
     }
 
-    public void EFOff()
+    public void EFOff() //효과음 OFF
     {
         effectOn = false;
         SimSoundManager.Sound.MoveAudioSource.volume = 0f;
         SimSoundManager.Sound.EffectAudioSource.volume = 0f;
     }
 
-    public void Continue()
+    public void Continue() //계속하기
     {
+        //소리 켜져있으면 게임 플레이 볼륨 다시 원래대로
         if (bgmOn == true)
             SimSoundManager.Sound.BGMAudioSource.volume = 0.8f;
         if (effectOn == true)
@@ -137,27 +147,30 @@ public class SimUIManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void ReGame()
+    public void ReGame() //다시시작
     {
         SceneManager.LoadScene("SampleScene");
     }
 
-    public void Exit()
+    public void Exit() //나가기
     {
         SceneManager.LoadScene("LevelSelect");
         Time.timeScale = 1f;
     }
 
-    public void GameClear()
+    public void GameClear() //게임 클리어 시 결과 화면
     {
         Time.timeScale = 0f;
+
         int hour1 = (int)_time / 36000;
         int hour2 = (int)_time / 3600 - hour1 * 10;
 
+        //시간, 맞춘개수, 틀린개수
         Result_Clear_Time.text = hour1 + "" + hour2 + ":" + _timerText.text;
         Result_Clear_Correct.text = Clear_Count + "개";
         Result_Clear_Uncorrect.text = Fail_Count + "개";
-
+        
+        //별 개수
         switch (Fail_Count)
         {
             case 0:
@@ -187,6 +200,7 @@ public class SimUIManager : MonoBehaviour
         }
         FinishPanel.SetActive(true);
 
+        //데이터
         Mmr_Sim_Data.mmr_Sim[SimLevelManager.Selected_Level].PlayTime = Result_Clear_Time.text;
         Mmr_Sim_Data.mmr_Sim[SimLevelManager.Selected_Level].CorrectCnt = Clear_Count + "";
         Mmr_Sim_Data.mmr_Sim[SimLevelManager.Selected_Level].UncorrectCnt = Fail_Count + "";
@@ -202,7 +216,7 @@ public class SimUIManager : MonoBehaviour
         }
     }
 
-    public void GameOver()
+    public void GameOver() //게임오버 시 결과화면, 데이터
     {
         Time.timeScale = 0f;
         int hour1 = (int)_time / 36000;
@@ -220,7 +234,7 @@ public class SimUIManager : MonoBehaviour
         Mmr_Sim_Data.mmr_Sim[SimLevelManager.Selected_Level].StarCnt = "0";
     }
 
-    public void NextButton()
+    public void NextButton() //다음 스테이지
     {
         if (SimLevelManager.Level.lightLevel != 8) //4,6이면
         {
@@ -253,7 +267,7 @@ public class SimUIManager : MonoBehaviour
         SimLevelManager.Selected_Level++;
     }
 
-    public void LevelText()
+    public void LevelText() //게임 화면 level 표시
     {
         switch (SimLevelManager.Level.levelselect)
         {

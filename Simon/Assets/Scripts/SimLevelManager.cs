@@ -4,8 +4,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/*
+ * LevelSelect 씬 관련 스크립트
+ */
+
 public class SimLevelManager : MonoBehaviour
 {
+    #region 변수
     public static int Selected_Level = 0;
 
     public GameObject LevelPanel;
@@ -22,8 +27,9 @@ public class SimLevelManager : MonoBehaviour
     public int lightLevel;
 
     public string[] LevelObjectName = new string[27];
+    #endregion
 
-    //싱글톤
+    #region Singleton
     private static SimLevelManager level;
     public static SimLevelManager Level
     {
@@ -34,6 +40,7 @@ public class SimLevelManager : MonoBehaviour
     {
         level = GetComponent<SimLevelManager>();
     }
+    #endregion
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +53,8 @@ public class SimLevelManager : MonoBehaviour
         {
             GameObject clearstar = GameObject.Find(LevelObjectName[i]).transform.Find("ClearStar").gameObject;
             GameObject obj_lock = GameObject. Find(LevelObjectName[i]).transform.Find("Lock").gameObject;
+
+            //깬 별 개수에 맞게 Star 오브젝트 활성화
             switch (int.Parse(Mmr_Sim_Data.mmr_Sim[i].StarCnt))
             {
                 case 1:
@@ -63,12 +72,13 @@ public class SimLevelManager : MonoBehaviour
                 default:
                     break;
             }
-            if (Mmr_Sim_Data.mmr_Sim[i].Lock.Equals("true"))
+            
+            if (Mmr_Sim_Data.mmr_Sim[i].Lock.Equals("true")) //아직 안풀린 레벨 잠금
             {
                 obj_lock.SetActive(true);
                 GameObject.Find(LevelObjectName[i]).GetComponent<Button>().interactable = false;
             }
-            else
+            else //잠금 해제
             {
                 obj_lock.SetActive(false);
                 GameObject.Find(LevelObjectName[i]).GetComponent<Button>().interactable = true;
@@ -76,13 +86,7 @@ public class SimLevelManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    public void NextPage()
+    public void NextPage() //다음 페이지
     {
         // 페이지 위치 옮기고 왼화살표 키고 포지션상태 변경
         LeftArrow.SetActive(true);
@@ -99,7 +103,7 @@ public class SimLevelManager : MonoBehaviour
         }
     }
 
-    public void BeforePage()
+    public void BeforePage() //이전 페이지
     {
         // 페이지 위치 옮기고 오른화살표 끄고 포지션상태 변경
         RightArrow.SetActive(true);
@@ -116,7 +120,8 @@ public class SimLevelManager : MonoBehaviour
         }
     }
 
-    public void TimeSelect(int timeIndex)
+    //각 스테이지에 time/light/level 값을 넣어놓았음 -> 그것에 따라 stage 난이도 달라짐
+    public void TimeSelect(int timeIndex) 
     {
         switch (timeIndex)
         {
@@ -162,15 +167,15 @@ public class SimLevelManager : MonoBehaviour
                 levelselect = 9;
                 break;
         }
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("SampleScene"); //게임 진행 화면으로
     }
 
-    public void SelectLevel(int level)
+    public void SelectLevel(int level) //선택한 stage 정보 
     {
         Selected_Level = level;
     }
 
-    public void Back()
+    public void Back() //게임 시작 화면으로
     {
         SceneManager.LoadScene("GameStart");
     }
